@@ -20,7 +20,7 @@ services:
 ```
 
 #### docker 运行
- - `docker run -itd -p 自定义端口:48881 -v /config文件目录/config.yml:/home/oai-proxy/config.yml --name oai-proxy --restart always neccen/oai-proxy:latest`
+ - `docker run -itd -p 自定义端口:48881 -v /config文件目录/config.yml:/home/oai-proxy/config.yml --name oai-proxy --restart always neccen/oai-proxy`
 
 #### 本地运行
  - 在[Releases · ycvk/oai-proxy](https://github.com/ycvk/oai-proxy/releases) 下载最新的对应版本压缩文件
