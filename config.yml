@@ -1,0 +1,7 @@
+access_token: xxx
+refresh_token: xxx
+site_password: abc123
+allow_users:
+    - aa
+    - e#F8!
+    - "666"

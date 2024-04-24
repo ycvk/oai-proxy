@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  oai-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GOOS: linux
+        GOARCH: arm64
+    image: oai-proxy
+    ports:
+      - "48881:48881"
+    container_name: oai-proxy
+    volumes:
+      - ./config.yml:/home/oai-proxy/config.yml
+    restart: unless-stopped
