@@ -23,7 +23,7 @@ ARG TARGETARCH
 WORKDIR /home/oai-proxy/
 COPY --from=builder /app/build/oaiproxy_${TARGETOS}_${TARGETARCH} /home/oai-proxy/oaiproxy
 COPY --from=builder /app/config.yml /home/oai-proxy/config.yml
-COPY --from=builder /app/src/* /home/oai-proxy/src/
+COPY --from=builder /app/template/* /home/oai-proxy/template/
 
 # 开放端口
 EXPOSE 48881
