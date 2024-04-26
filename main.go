@@ -2,7 +2,6 @@ package main
 
 import (
 	_ "embed"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/imroc/req/v3"
 	"gopkg.in/yaml.v3"
@@ -27,6 +26,7 @@ type Config struct {
 const (
 	refreshURL  = "https://token.oaifree.com/api/auth/refresh"
 	registerURL = "https://chat.oaifree.com/token/register"
+	oauthURL    = "https://new.oaifree.com/api/auth/oauth_token"
 	proxyURL    = "new.oaifree.com"
 	// 默认值
 	siteLimit         = ""
@@ -99,8 +99,19 @@ func main() {
 		if !ok {
 			tokenKey = "未找到 Share_token"
 		}
-		proxyLoginUrl := fmt.Sprintf("https://%s/auth/login_share?token=%s", proxyURL, tokenKey)
-		c.Redirect(http.StatusMovedPermanently, proxyLoginUrl)
+
+		loginResp := map[string]string{}
+
+		post, err := req.R().SetBody(map[string]string{
+			"share_token": tokenKey,
+		}).SetSuccessResult(&loginResp).Post(oauthURL)
+		if err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+			return
+		}
+		defer post.Body.Close()
+
+		c.Redirect(http.StatusMovedPermanently, loginResp["login_url"])
 	})
 
 	r.Run("0.0.0.0:48881")
