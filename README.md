@@ -2,6 +2,7 @@
 
 
 实现了网站密码，聊天隔离，限定访问用户，自动刷新access_token等
+使用转OAuth的方式登陆，提高安全性，避免share_token泄露
 
 ### 使用方法
 
@@ -34,8 +35,8 @@ services:
 
 ### `config.yml`配置文件说明
 ```yaml
-access_token: xxx #OpenAI的access_token 
-refresh_token: xxx #可以为空，会自动根据access_token获取并保存
+access_token: xxx #access_token，可以为空，会自动根据refresh_token获取并保存
+refresh_token: xxx #OpenAI的refresh_token
 site_password: abc123 #网站的密码
 allow_users: #允许登录的用户
    - 
