@@ -7,6 +7,10 @@
     --background-color: #ffffff;
     --input-background: #f5f5f5;
     --button-hover: #333333;
+    --error-background: #ffebee;
+    --error-color: #c62828;
+    --success-background: #e8f5e9;
+    --success-color: #2e7d32;
 }
 
 * {
@@ -64,7 +68,7 @@ legend {
 
 .input-wrapper {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem; /* 增加输入框之间的间距 */
 }
 
 .input-wrapper label {
@@ -75,7 +79,8 @@ legend {
     transition: all 0.3s ease;
     transform-origin: left top;
     color: var(--label-color);
-    background-color: var(--input-background);
+    background-color: transparent;
+    z-index: 1; /* 确保标签始终在最上层 */
 }
 
 .input-wrapper input {
@@ -92,12 +97,15 @@ legend {
 .input-wrapper input:not(:placeholder-shown) {
     border-color: var(--primary-color);
     outline: none;
+    background-color: var(--secondary-color); /* 聚焦时改变背景色为白色 */
 }
 
 .input-wrapper input:focus + label,
 .input-wrapper input:not(:placeholder-shown) + label {
-    transform: translateY(-1.5rem) scale(0.85);
+    transform: translateY(-3rem) scale(0.85); /* 增加上移距离 */
     color: var(--primary-color);
+    background-color: var(--background-color);
+    padding: 0 0.25rem;
 }
 
 #togglePassword {
@@ -199,8 +207,6 @@ footer a:hover {
     animation: shake 0.5s ease-in-out;
 }
 
-/* 在之前的CSS基础上添加以下样式 */
-
 .error-message, .success-message {
     padding: 10px;
     border-radius: 5px;
@@ -208,20 +214,22 @@ footer a:hover {
     text-align: center;
     font-weight: 500;
     transition: all 0.3s ease;
+    position: relative; /* 添加相对定位 */
+    z-index: 2; /* 确保消息在标签之上 */
 }
 
 .error-message {
-    background-color: #ffebee;
-    color: #c62828;
+    background-color: var(--error-background);
+    color: var(--error-color);
 }
 
 .success-message {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: var(--success-background);
+    color: var(--success-color);
 }
 
 .form.error .input-wrapper input {
-    border-color: #c62828;
+    border-color: var(--error-color);
 }
 
 @keyframes shake {
@@ -232,4 +240,9 @@ footer a:hover {
 
 .form.error {
     animation: shake 0.5s ease-in-out;
+}
+
+/* 添加额外的间距来容纳错误消息 */
+.form.error .input-wrapper:first-of-type {
+    margin-top: 2.5rem;
 }
