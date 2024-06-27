@@ -1,122 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 90vh;
-        overflow: hidden;
-        color: #333;
-        font-family: 'Roboto', sans-serif;
-   }
-
-    h1 {
-        text-align: center;
-    }
-
-    input {
-        appearance: none;
-        outline: none;
-    }
-
-    .input-wrapper {
-        position: relative;
-        margin-bottom: 20px;
-    }
-
-    .input-wrapper label {
-        position: absolute;
-        left: 10px;
-        top: 14px;
-        padding: 0 2px;
-        transition: all 0.3s ease;
-        transform-origin: left top;
-        color: #ccc;
-        background-color: #ffffff;
-    }
-
-    .input-wrapper input {
-        width: 274px;
-        height: 52px;
-        padding: 0 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        display: block;
-        font-size: 16px;
-    }
-
-    .input-wrapper input:not(:placeholder-shown) {
-        border-color: #0f9977 !important;
-    }
-
-    .input-wrapper input:focus {
-        border-color: #0f9977 !important;
-    }
-
-    .input-wrapper input:focus + label,
-    .input-wrapper input:not(:placeholder-shown) + label {
-        transform: scale(0.85) translateY(-26px);
-        font-size: 16px;
-        color: #00796b;
-    }
-
-    button {
-        background-color: #0f9977;
-        color: #ffffff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        width: 295px !important;
-        height: 52px;
-        transition: all 0.3s ease;
-    }
-
-    button:hover {
-        background-color: #01695f;
-    }
-
-    button:active {
-        transform: scale(0.98);
-    }
-
-    @media (max-width: 768px) {
-        body,
-        form,
-        .response-container {
-            padding: 20px;
-        }
-
-        .input-wrapper input,
-        button {
-            width: 100%;
-        }
-    }
-    </style>
-    <title>ChatGPT</title>
+    <meta name="description" content="登录到ChatGPT，开始您的AI对话之旅">
+    <meta name="keywords" content="ChatGPT, 登录, AI, 对话">
+    <title>登录到ChatGPT</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="/static/js/script.js" defer></script>
 </head>
 <body>
-<div>
-    <h1>ChatGPT</h1>
-    <form method="POST" action="/login">
-        <div class="input-wrapper">
-            <input type="text" id="unique_name" name="unique_name" placeholder=" " required value=""
-                   aria-label="User Token">
-            <label for="unique_name">UserToken</label>
-        </div>
-        <div class="input-wrapper">
-            <input type="password" id="site_password" name="site_password" placeholder=" " aria-label="Password">
-            <label for="site_password">PassWord</label>
-        </div>
-        <button type="submit">Continue</button>
-    </form>
+<div class="container">
+    <header>
+        <h1>登录到ChatGPT</h1>
+    </header>
+    <main>
+        <form id="loginForm" method="POST" action="/login">
+            <fieldset>
+                <legend>请输入您的登录信息</legend>
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                <div class="input-wrapper">
+                    <input type="text" id="unique_name" name="unique_name" placeholder=" " required aria-label="用户令牌">
+                    <label for="unique_name">用户令牌</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="password" id="site_password" name="site_password" placeholder=" " required aria-label="密码">
+                    <label for="site_password">密码</label>
+                    <button type="button" id="togglePassword" aria-label="显示密码">👁️</button>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="remember_me" name="remember_me">
+                    <label for="remember_me">记住我</label>
+                </div>
+                <button type="submit">登录</button>
+            </fieldset>
+        </form>
+    </main>
 </div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	_ "embed"
 	"github.com/gin-gonic/gin"
 	"github.com/imroc/req/v3"
@@ -14,6 +15,7 @@ var (
 	//go:embed config.yml
 	configByte []byte
 	cfg        Config
+	reqCli     = req.C().SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
 )
 
 type Config struct {
@@ -48,6 +50,9 @@ func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("template/*")
 
+	// 设置静态文件服务
+	r.Static("/static", "./static")
+
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
@@ -64,13 +69,13 @@ func main() {
 
 		sitePassword := c.PostForm("site_password")
 		if sitePassword != cfg.SitePassword {
-			c.String(http.StatusUnauthorized, "密码错误")
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "密码错误"})
 			return
 		}
 
 		uniqueName := c.PostForm("unique_name")
 		if !slices.Contains(cfg.AllowUsers, uniqueName) {
-			c.String(http.StatusForbidden, "未授权的用户")
+			c.JSON(http.StatusForbidden, gin.H{"error": "用户未授权"})
 			return
 		}
 
@@ -88,7 +93,7 @@ func main() {
 		}
 
 		var respData map[string]any
-		resp, err := req.R().SetFormDataFromValues(formData).SetSuccessResult(&respData).Post(registerURL)
+		resp, err := reqCli.R().SetFormDataFromValues(formData).SetSuccessResult(&respData).Post(registerURL)
 		if err != nil {
 			c.String(http.StatusInternalServerError, "Error registering token")
 			return
@@ -102,7 +107,7 @@ func main() {
 
 		loginResp := map[string]string{}
 
-		post, err := req.R().SetBody(map[string]string{
+		post, err := reqCli.R().SetBody(map[string]string{
 			"share_token": tokenKey,
 		}).SetSuccessResult(&loginResp).Post(oauthURL)
 		if err != nil {
@@ -111,8 +116,9 @@ func main() {
 		}
 		defer post.Body.Close()
 
-		c.Redirect(http.StatusMovedPermanently, loginResp["login_url"])
+		c.JSON(http.StatusOK, gin.H{"loginUrl": loginResp["login_url"]})
+		//c.Redirect(http.StatusMovedPermanently, loginResp["login_url"])
 	})
 
-	r.Run("0.0.0.0:48881")
+	r.Run("0.0.0.0:8080")
 }

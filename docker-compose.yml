@@ -9,7 +9,7 @@ services:
         GOARCH: arm64
     image: oai-proxy
     ports:
-      - "48881:48881"
+      - "8080:8080"
     container_name: oai-proxy
     volumes:
       - ./config.yml:/home/oai-proxy/config.yml

@@ -17,7 +17,7 @@ RUN go mod tidy
 RUN make build-all
 RUN upx -6 build/oaiproxy_linux_*
 
-FROM alpine as final
+FROM scratch as final
 ARG TARGETOS
 ARG TARGETARCH
 WORKDIR /home/oai-proxy/
@@ -26,7 +26,7 @@ COPY --from=builder /app/config.yml /home/oai-proxy/config.yml
 COPY --from=builder /app/template/* /home/oai-proxy/template/
 
 # 开放端口
-EXPOSE 48881
+EXPOSE 8080
 
 # 运行
 CMD ["./oaiproxy"]

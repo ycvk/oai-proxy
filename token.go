@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/bytedance/sonic"
-	"github.com/imroc/req/v3"
 	"gopkg.in/yaml.v3"
 	"log"
 	"net/http"
@@ -51,7 +50,7 @@ func isTokenExpired(token string) bool {
 
 func refreshAccessToken(config *Config) error {
 	var data map[string]any
-	resp, err := req.R().
+	resp, err := reqCli.R().
 		SetFormData(map[string]string{"refresh_token": config.RefreshToken}).
 		SetSuccessResult(&data).
 		Post(refreshURL)
